@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Manage Unit Pincodes</h2>
+
+    <!-- Debug Info (temporary) -->
+    <div class="alert alert-info">
+        Number of pincodes: {{ unit_pincodes|length }}
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            Add New Unit Pincode
+        </div>
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('unit_pincode') }}">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="unit_number" class="form-label">Unit Number</label>
+                        <input type="text" class="form-control" id="unit_number" name="unit_number" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="pin_code" class="form-label">Pin Code</label>
+                        <input type="text" class="form-control" id="pin_code" name="pin_code" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Pincode</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            Existing Unit Pincodes
+        </div>
+        <div class="card-body">
+            {% if unit_pincodes %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Unit Number</th>
+                                <th>Pin Code</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pincode in unit_pincodes %}
+                            <tr>
+                                <td>{{ pincode.id }}</td>
+                                <td>{{ pincode.unit_number }}</td>
+                                <td>{{ pincode.pin_code }}</td>
+                                <td>{{ pincode.formatted_date }}</td>
+                                <td>
+                                    <form method="POST" action="{{ url_for('delete_pincode', pincode_id=pincode.id) }}">
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
+                                            <i class="bi bi-trash"></i> Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-warning">
+                    No pincodes found in database. Add one using the form above.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
