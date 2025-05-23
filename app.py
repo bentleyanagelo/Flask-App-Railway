@@ -219,8 +219,7 @@ def format_date_filter(date, format_string='%b %d'):
         # Make the naive datetime object timezone-aware (as UTC)
         date = date.replace(tzinfo=pytz.utc)
     
-    # If the date is already a timezone-aware datetime object (e.g., from schedules),
-    # ensure it's converted to the local_tz for display.
+    
     # If it's already in local_tz, astimezone does nothing or handles correctly.
     return date.astimezone(local_tz).strftime(format_string)
 
@@ -637,6 +636,7 @@ def complete_schedule(schedule_id):
         close_db(conn)
     return redirect(url_for('schedule'))
 
+
 # --- Route for Unit Pincode Management ---
 @app.route('/unit_pincode', methods=['GET', 'POST'])
 def unit_pincode():
@@ -675,7 +675,7 @@ def unit_pincode():
     cursor.execute("SELECT * FROM unit_pincode ORDER BY unit_number")
     unit_pincodes = [dict(row) for row in cursor.fetchall()]
     # DEBUG: Print the fetched data
-    print("DEBUG - Unit Pincodes:", unit_pincodes)
+    
 
     conn.close()
 
